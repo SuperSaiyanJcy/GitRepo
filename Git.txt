@@ -1,0 +1,116 @@
+git init 
+git config --global user.name "SuperSaiyanJcy"
+git config --global user.email "SuperSaiyanJcy@gmail.com"
+git config --global credential.helper store
+git config --global --list
+
+git status			查看状态
+git add .				提交当前目录下的所有文件
+git add *.txt			使用通配符提交指定格式
+git log <--oneline>
+git log --graph --oneline
+
+git reset --soft <版本号>		回退到某一个版本，保留工作区与暂存区内容
+git reset --hard <版本号>		回退到某一个版本，丢弃工作区与暂存区内容
+git reset --mixed <版本号>	回退到某一个版本，保留工作区，丢弃暂存区内容
+git reset --hard HEAD^  表示上一个版本
+
+PS D:\Vscode\Git> git log --oneline
+042b801 (HEAD -> master) first commit
+
+PS D:\Vscode\Git> git add .
+PS D:\Vscode\Git> git commit -m "second commit"
+git commit -am "second commit"  一次执行
+
+PS D:\Vscode\Git> git reset --hard 042b801
+HEAD is now at 042b801 first commit
+
+误操作，查看操作历史记录，回退到版本号
+git reflog
+
+git diff 默认查看工作区 暂存区之间的差异，显示更改的文件和详细信息，两个特定版本、两个分支之间的差异
+
+PS D:\Vscode\Git> git diff
+diff --git a/Git.txt b/Git.txt
+index 58eb8e8..3c02ec5 100644
+--- a/Git.txt
++++ b/Git.txt
+@@ -22,3 +22,9 @@ PS D:\Vscode\Git> git reset --hard 042b801
+ HEAD is now at 042b801 first commit
+ PS D:\Vscode\Git> git log --oneline
+ 042b801 (HEAD -> master) first commit
++
++误操作，查看操作历史记录，回退到版本号
++git reflog
++
+
+HEAD可以表示当前分支的最新提交
+红色表示删除的内容，绿色表示添加的内容 
+git diff HEAD
+git diff --cached
+git diff 759eace d925f32/HEAD
+git diff HEAD~ HEAD(HEAD^ HEAD HEAD~2 HEAD之前的2个版本)
+git diff HEAD~ HEAD XXX.txt 只查看指定文件的差异
+
+rm xxx.txt 删除文件，暂存区中并没有删除
+git ls-files查看暂存区中的文件
+git rm file 工作区和暂存区同时删除
+git rm --cached <file>从暂存区中删掉，保留工作区
+git rm -r* 递归删除目录下的所有子目录和文件
+git commit -m "delete xxx.txt" 删除后记得提交
+
+.gitignore 不能是已经添加到版本库中的
+忽略系统或软件自动生成的文件，编译产生的中间文件和结果文件，运行时生成的日志文件、缓存文件、临时文件，密钥等
+
+PS D:\Vscode\Git> echo "some log" > 111.log
+echo "some log" >> 111.log >> 另起一行追加内容
+PS D:\Vscode\Git> echo 111.log > .gitignore 
+
+rm -r dirname 删除文件夹
+
+.gitignore  匹配规则，从上往下执行
+#号开头注释
+
+*通配任意个字符
+?匹配单个字符
+[]匹配列表中的单个字符，e.g. [abc]表示a/b/c
+**匹配任意的中间目录
+[0-9],[a-z],[A-Z]
+
+e.g.
+#忽略所有的.a文件
+*.a
+#但是跟踪所有的 lib.a 即使在前面忽略了 .a文件
+!lib.a
+#只忽略当前目录下的T0D0文件，而不忽略subdir/T0D0 subdir子目录
+/T0D0
+#忽略任何目录下名为build的文件夹
+build/
+#忽略 doc/11.txt 但不忽略 doc/sub/222.txt
+doc/*.txt
+#忽略doc/目录及其所有子目录下的.pdf文件
+doc/**/*.pdf
+
+git remote -v 查看当前所有远程地址别名
+git remote add alias repo-address
+git push <remote-alias> <branch>
+git pull <remote-alias> <branch>
+git pull <远程仓库名> <远程分支名>:<本地分支名>
+git clone repo-address
+
+ssh-keygen -t rsa -b 4096 ~/user/.ssh
+cat id_rsa.pub
+SSH keys
+
+git push -u origin master:master  -u(-upstream) 本地仓库的main分支推送给远程仓库的main分支 两分支名称相同省略写一个
+git push --set-upstream origin master   本地 master 分支与远程分支建立关联
+这条命令会将本地的 master 分支推送到远程仓库 origin，并且将 origin/master 设置为本地 master 分支的 upstream
+
+git branch          查看当前所有分支
+git branch branch-name      创建分支
+git checkout branch-name    切换到某一分支 checkout也会用来恢复文件，如果分支名与文件名相同，歧义，会默认切换分支而不是恢复文件
+git switch branch-name
+git merge branch-name   将该分支合并到当前分支
+git log --graph --oneline
+git branch -d dev -d删除已经合并的分支
+git branch -D dev -D删除未合并的分支
