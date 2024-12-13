@@ -1,2 +1,2 @@
 ﻿# GitRepo
-This is a test !
+Git learn
