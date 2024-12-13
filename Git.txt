@@ -21,6 +21,7 @@ PS D:\Vscode\Git> git log --oneline
 PS D:\Vscode\Git> git add .
 PS D:\Vscode\Git> git commit -m "second commit"
 git commit -am "second commit"  一次执行
+-am 简写-a -m
 
 PS D:\Vscode\Git> git reset --hard 042b801
 HEAD is now at 042b801 first commit
@@ -114,3 +115,16 @@ git merge branch-name   将该分支合并到当前分支
 git log --graph --oneline
 git branch -d dev -d删除已经合并的分支
 git branch -D dev -D删除未合并的分支
+
+分支冲突
+master分支中修改xxx.txt，dev分支中修改xxx.txt合并冲突
+利用git diff查看冲突列表
+<<<<HEAD
+XXXXX111
+======
+XXXXX222
+>>>>dev
+修改冲突的地方
+git commit -am "merge"
+中止合并
+git merge --abort
